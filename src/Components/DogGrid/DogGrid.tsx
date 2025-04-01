@@ -3,7 +3,7 @@ import { apiUrl } from "../../config";
 import DogCard from "./DogCard/DogCard";
 import Filters from "./Filters/Filters";
 import Pagination from "./Pagination/Pagination";
-import { Dog } from "../../types";
+import { Dog, Location } from "../../types";
 import { Grid } from "./DogGrid.styles";
 import FiltersContext from "../../StateManagement/FiltersContext";
 
@@ -13,6 +13,7 @@ const DogGrid = () => {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
+  const [zipCodeMap, setZipCodeMap] = useState<Record<string, Location>>({});
   const { state: filtersState } = useContext(FiltersContext);
 
   const { breeds, sortBy, sortDir } = filtersState;
@@ -61,13 +62,45 @@ const DogGrid = () => {
     setPage(1);
   }, [breeds]);
 
+  useEffect(() => {
+    const zipCodes = dogs.map((dog) => dog.zip_code);
+
+    const fetchLocations = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/locations`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(zipCodes),
+          credentials: "include",
+        });
+
+        const locations = await response.json();
+        const map: Record<string, Location> = {};
+
+        // @JonK: Double check for possible zip code collision if coordinates are different
+        locations.forEach((location: Location) => {
+          const { zip_code } = location;
+          map[zip_code] = location;
+        });
+
+        setZipCodeMap(map);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchLocations();
+  }, [dogs]);
+
   return (
     <div>
       <Filters />
       <Grid container spacing={2} columns={10}>
         {dogs.map((dog) => (
           <Grid key={dog.id} size={2}>
-            <DogCard dog={dog} />
+            <DogCard dog={dog} location={zipCodeMap[dog.zip_code]} />
           </Grid>
         ))}
       </Grid>

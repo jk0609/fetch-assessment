@@ -11,8 +11,8 @@ function App() {
 
   return (
     <FiltersContext.Provider value={{ state, dispatch }}>
-      {/* {isLoggedIn ? <DogGrid /> : <Login onLogin={() => setIsLoggedIn(true)} />} */}
-      <DogGrid />
+      {isLoggedIn ? <DogGrid /> : <Login onLogin={() => setIsLoggedIn(true)} />}
+      {/* <DogGrid /> */}
     </FiltersContext.Provider>
   );
 }

@@ -1,16 +1,14 @@
-import { Dog } from "../../../types";
+import { Dog, Location } from "../../../types";
 import { Container, Content, Image, Info, Label, Name } from "./DogCard.styles";
 
 type Props = {
   dog: Dog;
+  location: Location;
 };
 
 const DogCard = (props: Props) => {
-  const { dog } = props;
-  const { age, breed, id, img, name, zip_code: zipCode } = dog;
-
-  // @JonK: age to years
-  // @JonK: zipcode to location
+  const { dog, location } = props;
+  const { age, breed, id, img, name } = dog;
 
   return (
     <Container variant="outlined">
@@ -19,16 +17,22 @@ const DogCard = (props: Props) => {
         <Name>{name}</Name>
         <Info>
           <Label>Age: </Label>
-          {age}
+          {age === 0 ? "Less than 1 " : `${age} `}
+          year{age > 1 ? "s" : ""} old
         </Info>
         <Info>
           <Label>Breed: </Label>
           {breed}
         </Info>
-        <Info>
-          <Label>Location: </Label>
-          {zipCode}
-        </Info>
+        {/* @JonK: loading spinner if location is unavailable */}
+        {location ? (
+          <Info>
+            <Label>Location: </Label>
+            {`${location.city}, ${location.state ?? location.county}`}
+          </Info>
+        ) : (
+          <div>Spinner</div>
+        )}
       </Content>
     </Container>
   );
