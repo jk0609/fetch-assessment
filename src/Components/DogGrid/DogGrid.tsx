@@ -15,15 +15,16 @@ const DogGrid = () => {
   const [hasNextPage, setHasNextPage] = useState(false);
   const { state: filtersState } = useContext(FiltersContext);
 
-  const { breeds } = filtersState;
+  const { breeds, sortBy, sortDir } = filtersState;
 
   useEffect(() => {
     const fetchDogs = async () => {
       try {
         const params = new URLSearchParams({
-          ...(!!breeds && breeds.length !== 0 && { breeds }),
+          ...(breeds.length !== 0 && { breeds }),
           size: PAGE_SIZE,
           from: (page - 1) * PAGE_SIZE,
+          sort: `${sortBy}:${sortDir}`,
         });
 
         const idResponse = await fetch(
@@ -54,7 +55,7 @@ const DogGrid = () => {
     };
 
     fetchDogs();
-  }, [breeds, page]);
+  }, [breeds, page, sortBy, sortDir]);
 
   useEffect(() => {
     setPage(1);

@@ -1,6 +1,12 @@
 import { useEffect, useState, useContext } from "react";
 import { apiUrl } from "../../../config";
-import { Container, BreedSelect, BreedOption } from "./Filters.styles";
+import {
+  Container,
+  Breed,
+  SortBy,
+  SortDirection,
+  Option,
+} from "./Filters.styles";
 import FiltersContext from "../../../StateManagement/FiltersContext";
 
 const Filters = () => {
@@ -8,7 +14,7 @@ const Filters = () => {
 
   const { state, dispatch } = useContext(FiltersContext);
 
-  const { breeds } = state;
+  const { breeds, sortBy, sortDir } = state;
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -28,7 +34,7 @@ const Filters = () => {
   return (
     <Container>
       {breedOptions && (
-        <BreedSelect
+        <Breed
           value={breeds ?? []}
           label="Breeds"
           onChange={(e) => {
@@ -37,26 +43,56 @@ const Filters = () => {
               payload: e.target.value as unknown as string[],
             });
           }}
-          select
-          variant="outlined"
           slotProps={{
-            inputLabel: {
-              style: {
-                color: "white",
-              },
-            },
             select: {
               multiple: true,
             },
           }}
         >
           {breedOptions.map((breed) => (
-            <BreedOption key={breed} value={breed}>
+            <Option key={breed} value={breed}>
               {breed}
-            </BreedOption>
+            </Option>
           ))}
-        </BreedSelect>
+        </Breed>
       )}
+      <SortBy
+        value={sortBy}
+        label="Sort By"
+        onChange={(e) => {
+          dispatch({
+            type: "UPDATE_SORT_BY",
+            payload: e.target.value,
+          });
+        }}
+      >
+        <Option key="breed" value="breed">
+          Breed
+        </Option>
+        <Option key="name" value="name">
+          Name
+        </Option>
+        <Option key="age" value="age">
+          Age
+        </Option>
+      </SortBy>
+      <SortDirection
+        value={sortDir}
+        label="Sort Direction"
+        onChange={(e) => {
+          dispatch({
+            type: "UPDATE_SORT_DIR",
+            payload: e.target.value,
+          });
+        }}
+      >
+        <Option key="desc" value="desc">
+          Descending
+        </Option>
+        <Option key="asc" value="asc">
+          Ascending
+        </Option>
+      </SortDirection>
     </Container>
   );
 };

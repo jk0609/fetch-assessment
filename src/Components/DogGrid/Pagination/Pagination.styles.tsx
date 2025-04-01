@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { IconButton } from "@mui/material";
 import { ArrowForward, ArrowBack } from "@mui/icons-material";
 
+// @JonK: different color when disabled
+
 type ButtonProps = {
   onClick: () => void;
   disabled: boolean;

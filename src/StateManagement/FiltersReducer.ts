@@ -1,7 +1,9 @@
 import { State, Action } from "./types";
 
 const initialState = {
-  breeds: undefined,
+  breeds: [],
+  sortBy: "breed",
+  sortDir: "asc",
 };
 
 const filtersReducer = (state: State, action: Action) => {
@@ -10,6 +12,16 @@ const filtersReducer = (state: State, action: Action) => {
       return {
         ...state,
         breeds: action.payload,
+      };
+    case "UPDATE_SORT_BY":
+      return {
+        ...state,
+        sortBy: action.payload,
+      };
+    case "UPDATE_SORT_DIR":
+      return {
+        ...state,
+        sortDir: action.payload,
       };
     default:
       return state;
