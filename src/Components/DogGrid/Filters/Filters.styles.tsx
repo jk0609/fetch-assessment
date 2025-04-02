@@ -9,6 +9,10 @@ export const Container = styled.div`
   background: #fff;
   gap: 1rem;
   border-radius: 5px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 type SelectProps = {
@@ -30,13 +34,17 @@ const Select = styled((props: SelectProps) => {
     </TextField>
   );
 })`
-  width: 15%;
+  width: 150px;
 `;
 
 export const Option = styled(MenuItem)``;
 
 export const Breed = styled(Select)`
-  width: 40%;
+  width: 300px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
 
 export const SortBy = styled(Select)``;

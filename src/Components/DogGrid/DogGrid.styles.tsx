@@ -17,12 +17,17 @@ export const Controls = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 30px;
+  padding: 20px;
   margin-bottom: 30px;
   background-color: #fff;
   width: 100%;
   border-radius: 10px;
   box-sizing: border-box;
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
 `;
 
 export const GridContainer = styled.div`
@@ -57,7 +62,7 @@ export const LogOut = styled(Button)`
   }
 `;
 
-export const LoadingSpinner = styled.div`
+const Spinner = styled.div`
   border: 12px solid #fff;
   border-top: 12px solid #000;
   border-radius: 50%;
@@ -73,4 +78,26 @@ export const LoadingSpinner = styled.div`
       transform: rotate(360deg);
     }
   }
+`;
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  width: 95vw;
+`;
+
+export const LoadingSpinner = styled(() => (
+  <SpinnerContainer>
+    <Spinner />
+  </SpinnerContainer>
+))``;
+
+export const NoResults = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+  width: 95vw;
 `;

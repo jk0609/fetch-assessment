@@ -15,6 +15,7 @@ import {
   MatchModal,
   LoadingSpinner,
   LogOut,
+  NoResults,
 } from "./DogGrid.styles";
 import FiltersContext from "@StateManagement/FiltersContext";
 
@@ -42,7 +43,6 @@ const DogGrid = (props: Props) => {
   // @JonK: pull dogs and location into custom hooks
   useEffect(() => {
     setIsLoading(true);
-    console.log("breeds", breeds);
     const fetchDogs = async () => {
       try {
         const params = new URLSearchParams({
@@ -87,6 +87,10 @@ const DogGrid = (props: Props) => {
   useEffect(() => {
     setPage(1);
   }, [breeds]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
 
   useEffect(() => {
     const zipCodes = dogs.map((dog) => dog.zip_code);
@@ -177,10 +181,12 @@ const DogGrid = (props: Props) => {
       <GridContainer>
         {isLoading ? (
           <LoadingSpinner />
+        ) : !dogs.length ? (
+          <NoResults>No Dogs Found</NoResults>
         ) : (
           <Grid container spacing={2} columns={10}>
             {dogs.map((dog) => (
-              <Grid key={dog.id} size={2}>
+              <Grid key={dog.id} size={{ xs: 10, md: 2 }}>
                 <DogCard
                   dog={dog}
                   location={zipCodeMap[dog.zip_code]}
