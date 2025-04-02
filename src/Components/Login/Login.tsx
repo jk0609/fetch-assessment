@@ -1,16 +1,25 @@
-import { useState } from "react";
-import { apiUrl } from "../../config";
+import {
+  Container,
+  Label,
+  LogInButton,
+  LogInForm,
+  Field,
+  FormControl,
+  Title,
+} from "./LogIn.styles";
+import { apiUrl } from "@Utils/config";
 
 type Props = {
-  onLogin: () => void;
+  onLogIn: () => void;
 };
 
-const Login = (props: Props) => {
-  const { onLogin } = props;
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+const LogIn = (props: Props) => {
+  const { onLogIn } = props;
 
-  const onLoginClick = async () => {
+  const fetchLogIn = async (
+    name: FormDataEntryValue | null,
+    email: FormDataEntryValue | null
+  ) => {
     try {
       const response = await fetch(`${apiUrl}/auth/login`, {
         headers: {
@@ -21,47 +30,49 @@ const Login = (props: Props) => {
         credentials: "include",
       });
 
-      onLogin();
-
-      console.log(response);
+      onLogIn();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const onLogoutClick = async () => {
-    try {
-      const response = await fetch(`${apiUrl}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      console.log(response);
-    } catch (err) {
-      console.error(err);
-    }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    fetchLogIn(data.get("name"), data.get("email"));
   };
 
   return (
-    <>
-      <div>
-        <p>Name</p>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <p>Email</p>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <button onClick={() => onLoginClick()}>Log In</button>
-      <button onClick={() => onLogoutClick()}>Log Out</button>
-    </>
+    <Container>
+      <Title>Sign In</Title>
+      <LogInForm onSubmit={onSubmit}>
+        <FormControl>
+          <Label htmlFor="name">Name</Label>
+          <Field
+            placeholder="Your Name"
+            type="name"
+            id="name"
+            name="name"
+            autoFocus
+            required
+          />
+        </FormControl>
+        <FormControl>
+          <Label htmlFor="email">Email</Label>
+          <Field
+            id="email"
+            type="email"
+            name="email"
+            placeholder="your@email.com"
+            autoComplete="email"
+            autoFocus
+            required
+          />
+        </FormControl>
+        <LogInButton type="submit">LogIn</LogInButton>
+      </LogInForm>
+    </Container>
   );
 };
 
-export default Login;
+export default LogIn;

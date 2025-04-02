@@ -9,8 +9,9 @@ export const Content = styled(Card)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40%;
-  background-color: #242424;
+  width: 25%;
+  height: 60%;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,4 +26,5 @@ export const Image = styled(CardMedia)`
 
 export const Text = styled.span`
   font-size: 24px;
+  text-align: center;
 `;

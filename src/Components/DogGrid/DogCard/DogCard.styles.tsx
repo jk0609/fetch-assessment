@@ -20,7 +20,7 @@ export const Container = styled(Card, {
   shouldForwardProp: (prop) => prop !== "$isSelected",
 })<ContainerProps>`
   border: 3px solid ${(props) => (props.$isSelected ? "#79c4b7" : "#f4f0ee")};
-  border-radius: 15px;
+  border-radius: 10px;
   height: ${CARD_HEIGHT}px;
 `;
 
@@ -81,5 +81,23 @@ export const UnselectButton = styled((props: UnselectButtonProps) => (
 
   &:hover {
     background-color: #429587;
+  }
+`;
+
+export const LoadingSpinner = styled.div`
+  border: 2px solid #fff;
+  border-top: 2px solid #000;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  animation: spin 2s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;

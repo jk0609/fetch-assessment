@@ -1,9 +1,9 @@
 import { useState, useReducer } from "react";
 import "./App.css";
-import { filtersReducer, initialState } from "./StateManagement/FiltersReducer";
-import FiltersContext from "./StateManagement/FiltersContext";
-import DogGrid from "./Components/DogGrid/DogGrid";
-import Login from "./Components/Login/Login";
+import { filtersReducer, initialState } from "@StateManagement/FiltersReducer";
+import FiltersContext from "@StateManagement/FiltersContext";
+import DogGrid from "@Components/DogGrid/DogGrid";
+import LogIn from "@Components/LogIn/LogIn";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,7 +11,11 @@ function App() {
 
   return (
     <FiltersContext.Provider value={{ state, dispatch }}>
-      {isLoggedIn ? <DogGrid /> : <Login onLogin={() => setIsLoggedIn(true)} />}
+      {isLoggedIn ? (
+        <DogGrid onLogOut={() => setIsLoggedIn(false)} />
+      ) : (
+        <LogIn onLogIn={() => setIsLoggedIn(true)} />
+      )}
       {/* <DogGrid /> */}
     </FiltersContext.Provider>
   );

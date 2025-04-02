@@ -5,7 +5,7 @@ import { ChangeEvent, ReactNode } from "react";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  width: 85%;
+  width: 80%;
   background: #fff;
   gap: 1rem;
   border-radius: 5px;

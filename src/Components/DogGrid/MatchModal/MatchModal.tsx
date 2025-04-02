@@ -1,5 +1,5 @@
 import { Container, Content, Image, Text } from "./MatchModal.styles";
-import { Dog } from "../../../types";
+import { Dog } from "@Utils/types";
 
 type Props = {
   isModalOpen: boolean;
@@ -15,7 +15,8 @@ const MatchModal = (props: Props) => {
       {match ? (
         <Content>
           <Image image={match.img} title={`${match.name}-${match.id}`} />
-          <Text>Congratulations! You've matched with {match.name}.</Text>
+          <Text>Congratulations!</Text>
+          <Text>You've matched with {match.name}</Text>
         </Content>
       ) : (
         <div>spinner</div>

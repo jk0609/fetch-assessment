@@ -1,16 +1,33 @@
 import { useContext, useEffect, useState } from "react";
-import { apiUrl } from "../../config";
+import { apiUrl } from "@Utils/config";
 // @JonK: move these imports to styles
 import DogCard from "./DogCard/DogCard";
 import Filters from "./Filters/Filters";
 import Pagination from "./Pagination/Pagination";
-import { Dog, Location } from "../../types";
-import { Container, Controls, Grid, Match, MatchModal } from "./DogGrid.styles";
-import FiltersContext from "../../StateManagement/FiltersContext";
+import { Dog, Location } from "@Utils/types";
+import {
+  Container,
+  Controls,
+  Buttons,
+  Grid,
+  GridContainer,
+  Match,
+  MatchModal,
+  LoadingSpinner,
+  LogOut,
+} from "./DogGrid.styles";
+import FiltersContext from "@StateManagement/FiltersContext";
 
 const PAGE_SIZE = 25;
 
-const DogGrid = () => {
+type Props = {
+  onLogOut: () => void;
+};
+
+const DogGrid = (props: Props) => {
+  const { onLogOut } = props;
+
+  const [isLoading, setIsLoading] = useState(false);
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
@@ -24,6 +41,8 @@ const DogGrid = () => {
 
   // @JonK: pull dogs and location into custom hooks
   useEffect(() => {
+    setIsLoading(true);
+    console.log("breeds", breeds);
     const fetchDogs = async () => {
       try {
         const params = new URLSearchParams({
@@ -57,6 +76,8 @@ const DogGrid = () => {
         setDogs(dogResults);
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -121,40 +142,65 @@ const DogGrid = () => {
     }
   };
 
+  const logOut = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      onLogOut();
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Container>
       <Controls>
         <Filters />
-        <Match
-          onClick={() => {
-            setMatch(undefined);
-            setIsModalOpen(true);
-            fetchMatch();
-          }}
-          disabled={!selectedDogs.length}
-        >
-          Match Me!
-        </Match>
+        <Buttons>
+          <Match
+            onClick={() => {
+              setMatch(undefined);
+              setIsModalOpen(true);
+              fetchMatch();
+            }}
+            disabled={!selectedDogs.length}
+          >
+            Match Me!
+          </Match>
+          <LogOut onClick={() => logOut()}>Log Out</LogOut>
+        </Buttons>
       </Controls>
-      <Grid container spacing={2} columns={10}>
-        {dogs.map((dog) => (
-          <Grid key={dog.id} size={2}>
-            <DogCard
-              dog={dog}
-              location={zipCodeMap[dog.zip_code]}
-              onSelect={(dog: Dog) => setSelectedDogs([...selectedDogs, dog])}
-              onUnselect={(unselectedDog: Dog) =>
-                setSelectedDogs(
-                  selectedDogs.filter((dog) => dog.id !== unselectedDog.id)
-                )
-              }
-              isSelected={selectedDogs.some(
-                (selectedDog) => selectedDog.id === dog.id
-              )}
-            />
+      <GridContainer>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <Grid container spacing={2} columns={10}>
+            {dogs.map((dog) => (
+              <Grid key={dog.id} size={2}>
+                <DogCard
+                  dog={dog}
+                  location={zipCodeMap[dog.zip_code]}
+                  onSelect={(dog: Dog) =>
+                    setSelectedDogs([...selectedDogs, dog])
+                  }
+                  onUnselect={(unselectedDog: Dog) =>
+                    setSelectedDogs(
+                      selectedDogs.filter((dog) => dog.id !== unselectedDog.id)
+                    )
+                  }
+                  isSelected={selectedDogs.some(
+                    (selectedDog) => selectedDog.id === dog.id
+                  )}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        )}
+      </GridContainer>
       <Pagination
         changePage={(newPage: number) => setPage(newPage)}
         page={page}

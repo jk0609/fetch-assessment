@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { apiUrl } from "../../../config";
+import { apiUrl } from "@Utils/config";
 import {
   Container,
   Breed,
@@ -7,7 +7,7 @@ import {
   SortDirection,
   Option,
 } from "./Filters.styles";
-import FiltersContext from "../../../StateManagement/FiltersContext";
+import FiltersContext from "@StateManagement/FiltersContext";
 
 const Filters = () => {
   const [breedOptions, setBreedOptions] = useState([]);

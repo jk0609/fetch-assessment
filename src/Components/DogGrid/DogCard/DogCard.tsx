@@ -1,10 +1,11 @@
-import { Dog, Location } from "../../../types";
+import { Dog, Location } from "@Utils/types";
 import {
   Container,
   Content,
   Image,
   Info,
   Label,
+  LoadingSpinner,
   Name,
   SelectButton,
   UnselectButton,
@@ -36,14 +37,13 @@ const DogCard = (props: Props) => {
           <Label>Breed: </Label>
           {breed}
         </Info>
-        {/* @JonK: loading spinner if location is unavailable */}
         {location ? (
           <Info>
             <Label>Location: </Label>
             {`${location.city}, ${location.state ?? location.county}`}
           </Info>
         ) : (
-          <div>Spinner</div>
+          <LoadingSpinner />
         )}
       </Content>
       {isSelected ? (
