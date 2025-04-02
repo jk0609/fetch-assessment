@@ -5,6 +5,10 @@ import { ChangeEvent, ReactNode } from "react";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
+  width: 85%;
+  background: #fff;
+  gap: 1rem;
+  border-radius: 5px;
 `;
 
 type SelectProps = {
@@ -19,45 +23,21 @@ type SelectProps = {
   };
 };
 const Select = styled((props: SelectProps) => {
-  const { slotProps, children, ...propsRest } = props;
+  const { children, ...propsRest } = props;
   return (
-    <TextField
-      select
-      variant="outlined"
-      slotProps={{
-        inputLabel: {
-          style: {
-            color: "white",
-          },
-        },
-        ...slotProps,
-      }}
-      {...propsRest}
-    >
+    <TextField select variant="outlined" {...propsRest}>
       {children}
     </TextField>
   );
 })`
-  .MuiOutlinedInput-root {
-    color: white;
-  }
-  .MuiOutlinedInput-notchedOutline {
-    border-color: white;
-  }
-  .Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: white;
-  }
-  :hover .MuiOutlinedInput-notchedOutline {
-    border-color: white;
-  }
-  .MuiSvgIcon-root {
-    fill: white;
-  }
-  width: 25%;
+  width: 15%;
 `;
 
 export const Option = styled(MenuItem)``;
 
-export const Breed = styled(Select)``;
+export const Breed = styled(Select)`
+  width: 40%;
+`;
+
 export const SortBy = styled(Select)``;
 export const SortDirection = styled(Select)``;

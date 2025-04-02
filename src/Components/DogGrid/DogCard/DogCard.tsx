@@ -1,17 +1,29 @@
 import { Dog, Location } from "../../../types";
-import { Container, Content, Image, Info, Label, Name } from "./DogCard.styles";
+import {
+  Container,
+  Content,
+  Image,
+  Info,
+  Label,
+  Name,
+  SelectButton,
+  UnselectButton,
+} from "./DogCard.styles";
 
 type Props = {
   dog: Dog;
   location: Location;
+  onSelect: (dog: Dog) => void;
+  onUnselect: (dog: Dog) => void;
+  isSelected: boolean;
 };
 
 const DogCard = (props: Props) => {
-  const { dog, location } = props;
+  const { dog, location, onSelect, onUnselect, isSelected } = props;
   const { age, breed, id, img, name } = dog;
 
   return (
-    <Container variant="outlined">
+    <Container variant="outlined" $isSelected={isSelected}>
       <Image image={img} title={`${name}-${id}`} />
       <Content>
         <Name>{name}</Name>
@@ -34,6 +46,11 @@ const DogCard = (props: Props) => {
           <div>Spinner</div>
         )}
       </Content>
+      {isSelected ? (
+        <UnselectButton onClick={() => onUnselect(dog)} />
+      ) : (
+        <SelectButton onClick={() => onSelect(dog)}>Select Me!</SelectButton>
+      )}
     </Container>
   );
 };

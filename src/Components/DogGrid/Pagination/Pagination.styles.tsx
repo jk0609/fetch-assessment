@@ -13,13 +13,13 @@ export const Container = styled.div``;
 
 export const NextButton = styled((props: ButtonProps) => (
   <IconButton {...props}>
-    <ArrowForward style={{ color: "white" }} />
+    <ArrowForward />
   </IconButton>
 ))``;
 
 export const PrevButton = styled((props: ButtonProps) => (
   <IconButton {...props}>
-    <ArrowBack style={{ color: "white" }} />
+    <ArrowBack />
   </IconButton>
 ))``;
 

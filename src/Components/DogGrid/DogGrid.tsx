@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { apiUrl } from "../../config";
+// @JonK: move these imports to styles
 import DogCard from "./DogCard/DogCard";
 import Filters from "./Filters/Filters";
 import Pagination from "./Pagination/Pagination";
 import { Dog, Location } from "../../types";
-import { Grid } from "./DogGrid.styles";
+import { Container, Controls, Grid, Match, MatchModal } from "./DogGrid.styles";
 import FiltersContext from "../../StateManagement/FiltersContext";
 
 const PAGE_SIZE = 25;
@@ -14,10 +15,14 @@ const DogGrid = () => {
   const [page, setPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [zipCodeMap, setZipCodeMap] = useState<Record<string, Location>>({});
-  const { state: filtersState } = useContext(FiltersContext);
+  const [selectedDogs, setSelectedDogs] = useState<Dog[]>([]);
+  const [match, setMatch] = useState<Dog | undefined>(undefined);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { state: filtersState } = useContext(FiltersContext);
   const { breeds, sortBy, sortDir } = filtersState;
 
+  // @JonK: pull dogs and location into custom hooks
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -81,8 +86,10 @@ const DogGrid = () => {
 
         // @JonK: Double check for possible zip code collision if coordinates are different
         locations.forEach((location: Location) => {
-          const { zip_code } = location;
-          map[zip_code] = location;
+          if (location) {
+            const { zip_code } = location;
+            map[zip_code] = location;
+          }
         });
 
         setZipCodeMap(map);
@@ -94,13 +101,57 @@ const DogGrid = () => {
     fetchLocations();
   }, [dogs]);
 
+  const fetchMatch = async () => {
+    const ids = selectedDogs.map((dog) => dog.id);
+    try {
+      const response = await fetch(`${apiUrl}/dogs/match`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(ids),
+        credentials: "include",
+      });
+
+      const { match } = await response.json();
+      const matchedDog = selectedDogs.find((dog) => dog.id === match);
+      setMatch(matchedDog);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div>
-      <Filters />
+    <Container>
+      <Controls>
+        <Filters />
+        <Match
+          onClick={() => {
+            setMatch(undefined);
+            setIsModalOpen(true);
+            fetchMatch();
+          }}
+          disabled={!selectedDogs.length}
+        >
+          Match Me!
+        </Match>
+      </Controls>
       <Grid container spacing={2} columns={10}>
         {dogs.map((dog) => (
           <Grid key={dog.id} size={2}>
-            <DogCard dog={dog} location={zipCodeMap[dog.zip_code]} />
+            <DogCard
+              dog={dog}
+              location={zipCodeMap[dog.zip_code]}
+              onSelect={(dog: Dog) => setSelectedDogs([...selectedDogs, dog])}
+              onUnselect={(unselectedDog: Dog) =>
+                setSelectedDogs(
+                  selectedDogs.filter((dog) => dog.id !== unselectedDog.id)
+                )
+              }
+              isSelected={selectedDogs.some(
+                (selectedDog) => selectedDog.id === dog.id
+              )}
+            />
           </Grid>
         ))}
       </Grid>
@@ -109,7 +160,12 @@ const DogGrid = () => {
         page={page}
         hasNextPage={hasNextPage}
       />
-    </div>
+      <MatchModal
+        isModalOpen={isModalOpen}
+        match={match}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </Container>
   );
 };
 
