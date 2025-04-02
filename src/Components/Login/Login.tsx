@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Container,
   Label,
@@ -8,6 +9,7 @@ import {
   Title,
 } from "./LogIn.styles";
 import { apiUrl } from "@Utils/config";
+import AlertContext from "@StateManagement/Alert/AlertContext";
 
 type Props = {
   onLogIn: () => void;
@@ -15,6 +17,8 @@ type Props = {
 
 const LogIn = (props: Props) => {
   const { onLogIn } = props;
+
+  const { dispatch } = useContext(AlertContext);
 
   const fetchLogIn = async (
     name: FormDataEntryValue | null,
@@ -30,9 +34,16 @@ const LogIn = (props: Props) => {
         credentials: "include",
       });
 
+      if (response.status !== 200) {
+        throw new Error("There was an error logging in");
+      }
+
       onLogIn();
     } catch (err) {
-      console.error(err);
+      dispatch({
+        type: "UPDATE_ERROR",
+        payload: err.message,
+      });
     }
   };
 

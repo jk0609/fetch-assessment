@@ -7,12 +7,14 @@ import {
   SortDirection,
   Option,
 } from "./Filters.styles";
-import FiltersContext from "@StateManagement/FiltersContext";
+import FiltersContext from "@StateManagement/Filters/FiltersContext";
+import AlertContext from "@StateManagement/Alert/AlertContext";
 
 const Filters = () => {
   const [breedOptions, setBreedOptions] = useState([]);
 
-  const { state, dispatch } = useContext(FiltersContext);
+  const { state, dispatch: filtersDispatch } = useContext(FiltersContext);
+  const { dispatch: alertDispatch } = useContext(AlertContext);
 
   const { breeds, sortBy, sortDir } = state;
 
@@ -22,14 +24,22 @@ const Filters = () => {
         const response = await fetch(`${apiUrl}/dogs/breeds`, {
           credentials: "include",
         });
+
+        if (response.status !== 200) {
+          throw new Error("There was an error retrieving breeds");
+        }
+
         const breeds = await response.json();
         setBreedOptions(breeds);
       } catch (err) {
-        console.error(err);
+        alertDispatch({
+          type: "UPDATE_ERROR",
+          payload: err.message,
+        });
       }
     };
     fetchBreeds();
-  }, []);
+  }, [alertDispatch]);
 
   return (
     <Container>
@@ -38,7 +48,7 @@ const Filters = () => {
           value={breeds ?? []}
           label="Breeds"
           onChange={(e) => {
-            dispatch({
+            filtersDispatch({
               type: "UPDATE_BREEDS",
               payload: e.target.value as unknown as string[],
             });
@@ -60,7 +70,7 @@ const Filters = () => {
         value={sortBy}
         label="Sort By"
         onChange={(e) => {
-          dispatch({
+          filtersDispatch({
             type: "UPDATE_SORT_BY",
             payload: e.target.value,
           });
@@ -80,7 +90,7 @@ const Filters = () => {
         value={sortDir}
         label="Sort Direction"
         onChange={(e) => {
-          dispatch({
+          filtersDispatch({
             type: "UPDATE_SORT_DIR",
             payload: e.target.value,
           });

@@ -3,6 +3,8 @@ import { Button } from "@mui/material";
 
 export { default as Grid } from "@mui/material/Grid";
 export { default as MatchModal } from "./MatchModal/MatchModal";
+export { default as DogCard } from "./DogCard/DogCard";
+export { default as Filters } from "./Filters/Filters";
 
 export const Container = styled.div`
   display: flex;

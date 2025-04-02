@@ -8,6 +8,7 @@ export default defineConfig({
       "@StateManagement": "/src/StateManagement/",
       "@Components": "/src/Components/",
       "@Utils": "/src/Utils/",
+      "@Hooks": "/src/Hooks",
     },
   },
   plugins: [
