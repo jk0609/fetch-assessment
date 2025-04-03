@@ -58,6 +58,7 @@ export const Match = styled(Button)`
 export const LogOut = styled(Button)`
   height: 40px;
   color: #000;
+  background-color: #d3d3d3;
 
   &:hover {
     background-color: transparent;
@@ -66,7 +67,7 @@ export const LogOut = styled(Button)`
 
 const Spinner = styled.div`
   border: 12px solid #fff;
-  border-top: 12px solid #000;
+  border-top: 12px solid #d3d3d3;
   border-radius: 50%;
   width: 60px;
   height: 60px;

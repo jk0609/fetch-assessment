@@ -59,9 +59,10 @@ const useDogs = (
         const dogResults = await dogResponse.json();
         setDogs(dogResults);
       } catch (err) {
+        const error = err as Error;
         dispatch({
           type: "UPDATE_ERROR",
-          payload: err.message,
+          payload: error.message,
         });
       } finally {
         setIsLoading(false);

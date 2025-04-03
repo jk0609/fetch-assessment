@@ -1,4 +1,14 @@
-import { Container, Content, Image, Text } from "./MatchModal.styles";
+import {
+  Container,
+  Content,
+  Image,
+  Text,
+  TextContainer,
+  Buttons,
+  Meet,
+  GoBack,
+  Spinner,
+} from "./MatchModal.styles";
 import { Dog } from "@Utils/types";
 
 type Props = {
@@ -12,15 +22,23 @@ const MatchModal = (props: Props) => {
 
   return (
     <Container open={isModalOpen} onClose={onClose}>
-      {match ? (
-        <Content>
-          <Image image={match.img} title={`${match.name}-${match.id}`} />
-          <Text>Congratulations!</Text>
-          <Text>You've matched with {match.name}</Text>
-        </Content>
-      ) : (
-        <div>spinner</div>
-      )}
+      <Content>
+        {match ? (
+          <>
+            <Image image={match.img} title={`${match.name}-${match.id}`} />
+            <TextContainer>
+              <Text>Congratulations!</Text>
+              <Text>You've matched with {match.name}</Text>
+            </TextContainer>
+            <Buttons>
+              <GoBack onClick={onClose}>Go Back</GoBack>
+              <Meet>Meet {match.name}</Meet>
+            </Buttons>
+          </>
+        ) : (
+          <Spinner />
+        )}
+      </Content>
     </Container>
   );
 };

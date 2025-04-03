@@ -74,9 +74,10 @@ const DogGrid = (props: Props) => {
       const matchedDog = selectedDogs.find((dog) => dog.id === match);
       setMatch(matchedDog);
     } catch (err) {
+      const error = err as Error;
       alertDispatch({
         type: "UPDATE_ERROR",
-        payload: err.message,
+        payload: error.message,
       });
     }
   };
@@ -94,9 +95,10 @@ const DogGrid = (props: Props) => {
 
       onLogOut();
     } catch (err) {
+      const error = err as Error;
       alertDispatch({
         type: "UPDATE_ERROR",
-        payload: err.message,
+        payload: error.message,
       });
     }
   };

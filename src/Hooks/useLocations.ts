@@ -38,9 +38,10 @@ const useLocations = (dogs: Dog[]) => {
 
         setZipCodeMap(map);
       } catch (err) {
+        const error = err as Error;
         dispatch({
           type: "UPDATE_ERROR",
-          payload: err.message,
+          payload: error.message,
         });
       }
     };

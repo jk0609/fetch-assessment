@@ -32,9 +32,10 @@ const Filters = () => {
         const breeds = await response.json();
         setBreedOptions(breeds);
       } catch (err) {
+        const error = err as Error;
         alertDispatch({
           type: "UPDATE_ERROR",
-          payload: err.message,
+          payload: error.message,
         });
       }
     };

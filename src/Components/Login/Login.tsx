@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { FormEvent, useContext } from "react";
 import {
   Container,
   Label,
@@ -40,14 +40,15 @@ const LogIn = (props: Props) => {
 
       onLogIn();
     } catch (err) {
+      const error = err as Error;
       dispatch({
         type: "UPDATE_ERROR",
-        payload: err.message,
+        payload: error.message,
       });
     }
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     fetchLogIn(data.get("name"), data.get("email"));
