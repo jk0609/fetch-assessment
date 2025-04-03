@@ -21,12 +21,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@Components/*": ["./Components/*"],
-      "@StateManagement/*": ["./StateManagement/*"],
-      "@Utils/*": ["./Utils/*"],
-      "@Hooks/*": ["./Hooks/*"]
+      "/src/*": ["src/*"],
+      "@Components/*": ["src/Components/*"],
+      "@StateManagement/*": ["src/StateManagement/*"],
+      "@Utils/*": ["src/Utils/*"],
+      "@Hooks/*": ["src/Hooks/*"]
     }
   },
   "include": ["src"]
