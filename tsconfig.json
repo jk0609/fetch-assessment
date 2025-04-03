@@ -22,13 +22,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "/src/*": ["src/*"],
-      "@Components/*": ["src/Components/*"],
-      "@StateManagement/*": ["src/StateManagement/*"],
-      "@Utils/*": ["src/Utils/*"],
-      "@Hooks/*": ["src/Hooks/*"]
+      "@Components/*": ["./Components/*"],
+      "@StateManagement/*": ["./StateManagement/*"],
+      "@Utils/*": ["./Utils/*"],
+      "@Hooks/*": ["./Hooks/*"]
     }
-  }
+  },
+  "include": ["src"]
 }
