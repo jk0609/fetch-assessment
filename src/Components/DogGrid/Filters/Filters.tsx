@@ -110,7 +110,7 @@ const Filters = () => {
         valueLabelDisplay="on"
         min={0}
         max={20}
-        onChange={(e: Event, value: number | number[]) => {
+        onChange={(_: Event, value: number | number[]) => {
           filtersDispatch({
             type: "UPDATE_AGE",
             payload: value as number[],

@@ -19,13 +19,14 @@ const useDogs = (page: number) => {
     setIsLoading(true);
     const fetchDogs = async () => {
       try {
+        // @ts-expect-error: Passing an array into URLSearchParams
         const params = new URLSearchParams({
           ...(breeds.length !== 0 && { breeds }),
-          size: PAGE_SIZE,
-          from: (page - 1) * PAGE_SIZE,
+          size: PAGE_SIZE.toString(),
+          from: ((page - 1) * PAGE_SIZE).toString(),
           sort: `${sortBy}:${sortDir}`,
-          ageMin: age[0],
-          ageMax: age[1],
+          ageMin: age[0].toString(),
+          ageMax: age[1].toString(),
         });
 
         const idResponse = await fetch(
