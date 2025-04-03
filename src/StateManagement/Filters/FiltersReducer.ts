@@ -4,6 +4,7 @@ const initialState = {
   breeds: [],
   sortBy: "breed",
   sortDir: "asc",
+  age: [0, 20],
 };
 
 const filtersReducer = (state: State, action: Action) => {
@@ -22,6 +23,12 @@ const filtersReducer = (state: State, action: Action) => {
       return {
         ...state,
         sortDir: action.payload,
+      };
+    case "UPDATE_AGE":
+      console.log(action.payload);
+      return {
+        ...state,
+        age: action.payload,
       };
     default:
       return state;

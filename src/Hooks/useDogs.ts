@@ -1,19 +1,18 @@
 import { useState, useEffect, useContext } from "react";
 import { apiUrl } from "@Utils/config";
 import AlertContext from "@StateManagement/Alert/AlertContext";
+import FiltersContext from "@StateManagement/Filters/FiltersContext";
+import { Dog } from "@Utils/types";
 
 const PAGE_SIZE = 25;
 
-const useDogs = (
-  breeds: string[],
-  page: number,
-  sortBy: string,
-  sortDir: string
-) => {
+const useDogs = (page: number) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [hasNextPage, setHasNextPage] = useState(false);
 
+  const { state: filtersState } = useContext(FiltersContext);
+  const { breeds, sortBy, sortDir, age } = filtersState;
   const { dispatch } = useContext(AlertContext);
 
   useEffect(() => {
@@ -25,6 +24,8 @@ const useDogs = (
           size: PAGE_SIZE,
           from: (page - 1) * PAGE_SIZE,
           sort: `${sortBy}:${sortDir}`,
+          ageMin: age[0],
+          ageMax: age[1],
         });
 
         const idResponse = await fetch(
@@ -70,7 +71,7 @@ const useDogs = (
     };
 
     fetchDogs();
-  }, [breeds, page, sortBy, sortDir, dispatch]);
+  }, [breeds, page, sortBy, sortDir, age, dispatch]);
 
   return { dogs, isLoading, hasNextPage };
 };

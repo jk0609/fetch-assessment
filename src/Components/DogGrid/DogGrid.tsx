@@ -34,16 +34,11 @@ const DogGrid = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { state: filtersState } = useContext(FiltersContext);
-  const { breeds, sortBy, sortDir } = filtersState;
+  const { breeds } = filtersState;
 
   const { dispatch: alertDispatch } = useContext(AlertContext);
 
-  const { dogs, isLoading, hasNextPage } = useDogs(
-    breeds,
-    page,
-    sortBy,
-    sortDir
-  );
+  const { dogs, isLoading, hasNextPage } = useDogs(page);
   const { zipCodeMap } = useLocations(dogs);
 
   useEffect(() => {

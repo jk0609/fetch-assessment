@@ -6,6 +6,7 @@ import {
   SortBy,
   SortDirection,
   Option,
+  Age,
 } from "./Filters.styles";
 import FiltersContext from "@StateManagement/Filters/FiltersContext";
 import AlertContext from "@StateManagement/Alert/AlertContext";
@@ -16,7 +17,7 @@ const Filters = () => {
   const { state, dispatch: filtersDispatch } = useContext(FiltersContext);
   const { dispatch: alertDispatch } = useContext(AlertContext);
 
-  const { breeds, sortBy, sortDir } = state;
+  const { breeds, sortBy, sortDir, age } = state;
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -104,6 +105,19 @@ const Filters = () => {
           Ascending
         </Option>
       </SortDirection>
+      <Age
+        value={age}
+        valueLabelDisplay="on"
+        min={0}
+        max={20}
+        onChange={(e: Event, value: number | number[]) => {
+          filtersDispatch({
+            type: "UPDATE_AGE",
+            payload: value as number[],
+          });
+        }}
+        disableSwap
+      />
     </Container>
   );
 };
