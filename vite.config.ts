@@ -5,9 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   resolve: {
     alias: {
-      "@StateManagement": "/src/StateManagement/",
-      "@Components": "/src/Components/",
-      "@Utils": "/src/Utils/",
+      "@StateManagement": "/src/StateManagement",
+      "@Components": "/src/Components",
+      "@Utils": "/src/Utils",
       "@Hooks": "/src/Hooks",
     },
   },
